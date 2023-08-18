@@ -13,9 +13,7 @@ The program also features a schedule manager, where users can build schedules fo
 
 - `requests`
 - `matplotlib` & `mplcursors`
-- `calendar`
 - `datetime`
-- `json`
 
 ## How to Use
 

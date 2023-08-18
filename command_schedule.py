@@ -39,11 +39,11 @@ schedule = {}
 
 
 def get_schedule_commands(*args):
-    
+
     if len(args) >= 1:
         tokens = args
     else:
-    
+
         print("""
     Schedule commands:
         view                View current schedule
@@ -83,14 +83,14 @@ def get_schedule_commands(*args):
         # Call the function to add to the schedule and then view it.
         add_section_info(tokens[1], tokens[2])
         print_schedule()
-        
+
     # remove <course_id>
     elif command == 'remove':
         # Validate command
         if len(tokens) != 2:
             print(f"Invalid command. Try 'remove <course_id>'")
             return
-        
+
         # Call the function to remove from the schedule.
         remove_course(tokens[1])
 
@@ -128,8 +128,10 @@ def get_schedule_commands(*args):
 
 
 def save_schedule(filename=datetime.now().strftime("%Y-%m-%d")):
-    script_dir = os.path.dirname(os.path.abspath(__file__))  # Get the script directory
-    directory = os.path.join(script_dir, 'schedules')  # Save schedules relative to the script location
+    script_dir = os.path.dirname(os.path.abspath(
+        __file__))  # Get the script directory
+    # Save schedules relative to the script location
+    directory = os.path.join(script_dir, 'schedules')
     os.makedirs(directory, exist_ok=True)
     filepath = os.path.join(directory, filename)
 
@@ -139,8 +141,10 @@ def save_schedule(filename=datetime.now().strftime("%Y-%m-%d")):
 
 
 def load_schedule():
-    script_dir = os.path.dirname(os.path.abspath(__file__))  # Get the script directory
-    directory = os.path.join(script_dir, 'schedules')  # Load schedules relative to the script location
+    script_dir = os.path.dirname(os.path.abspath(
+        __file__))  # Get the script directory
+    # Load schedules relative to the script location
+    directory = os.path.join(script_dir, 'schedules')
     files = os.listdir(directory)
 
     if not files:
@@ -151,7 +155,8 @@ def load_schedule():
     for i, filename in enumerate(files):
         print(f"            {i+1}. {filename}")
 
-    selection = input("\n       Enter the number of the schedule to load (or 'cancel' to cancel): ")
+    selection = input(
+        "\n       Enter the number of the schedule to load (or 'cancel' to cancel): ")
     if selection.lower() == 'cancel':
         return
 
@@ -162,16 +167,17 @@ def load_schedule():
 
         with open(filepath, 'r') as file:
             loaded_data = json.load(file)
-            
+
             # clear schedule
             schedule.clear()
             # reload schedule
-            schedule.update({int(k): v for k, v in loaded_data.items()}) # Convert keys to integers
+            # Convert keys to integers
+            schedule.update({int(k): v for k, v in loaded_data.items()})
             print(f"       Loaded schedule {filename}!\n")
 
     except (ValueError, IndexError):
         print("Invalid selection.")
-        return 
+        return
 
 
 def convert_time_to_schedule(time_str):
@@ -242,7 +248,8 @@ def add_section_info(course_id, section_id):
                 add_event(schedule, day, start_time, end_time, course)
 
     else:
-        print('Error occurred while retrieving section information:', response.status_code)
+        print('Error occurred while retrieving section information:',
+              response.status_code)
 
 
 def remove_course(course_id):
@@ -251,12 +258,11 @@ def remove_course(course_id):
         for day, course in value.items():
             if course.lower() == course_id.lower():
                 keys_to_remove.append((key, day))
-                
+
     for key, day in keys_to_remove:
         del schedule[key][day]
-    
+
     if keys_to_remove:
         print(f'Removed course: {course_id.upper()}\n')
     else:
         print(f'Course does not exist!\n')
-    
