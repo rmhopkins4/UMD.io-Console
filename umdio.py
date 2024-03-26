@@ -1,4 +1,4 @@
-import requests
+
 from command_sections import get_course_sections
 from command_courseinfo import get_course_info
 from command_commands import get_commands
